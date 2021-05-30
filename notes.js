@@ -2,18 +2,15 @@ import chalk from 'chalk';
 import fs from 'fs';
 import { writeFileSync } from 'fs';
 import { readFileSync } from 'fs';
-
-const getNotes = () => {
-  return 'Your notes ... ';
-};
+import { title } from 'process';
 
 const addNotes = (title, body) => {
   const notes = loadNotes();
   // create new array that saves duplicate notes
-  const duplicateNotes = notes.filter(note => {
-    return note.title === title;
-  });
-  if (duplicateNotes.length === 0) {
+  // const duplicateNotes = notes.filter(note => note.title === title);
+  const duplicateNotes = notes.find(note => note.title === title);
+
+  if (!duplicateNotes) {
     notes.push({
       title: title,
       body: body,
@@ -27,17 +24,15 @@ const addNotes = (title, body) => {
 
 const removeNote = title => {
   const notes = loadNotes();
-  const notesToKeep = notes.filter(note => {
-    return note.title !== title;
-  });
-  if(notes.length>notesToKeep.length){
+  const notesToKeep = notes.filter(note => note.title !== title);
+  if (notes.length > notesToKeep.length) {
     console.log(chalk.green.inverse('Note removed !'));
     saveNotes(notesToKeep);
-  }else{
+  } else {
     console.log(chalk.red.inverse('No note found !'));
   }
 
-    // for(let i=0;i < notesToKeep.length;i++){
+  // for(let i=0;i < notesToKeep.length;i++){
   //   if (notesToKeep[i].title === title) {
   //     console.log(chalk.green.inverse('Note removed'));
   //   } else {
@@ -45,7 +40,7 @@ const removeNote = title => {
   //     break;
   //   }
   // }
-}; 
+};
 
 const saveNotes = notes => {
   const dataJSON = JSON.stringify(notes);
@@ -62,10 +57,29 @@ const loadNotes = () => {
   }
 };
 
+const listNote = () => {
+  const notes = loadNotes();
+  console.log(chalk.gray.white.inverse('Your Notes...'));
+  notes.forEach(element => {
+    console.log(chalk.blue(element.title));
+  });
+};
+
+const readNote = (title) => {
+  const notes = loadNotes();
+  const readnote = notes.find(note => note.title === title);
+  if (readnote) {
+    console.log(chalk.green(readnote.title + '  ' + readnote.body));
+  } else {
+    console.log(chalk.red('No note found'));
+  }
+};
+
 const exportedFunction = {
-  getNotes: getNotes,
   addNotes: addNotes,
   removeNote: removeNote,
+  listNote: listNote,
+  readNote: readNote,
 };
 
 export default exportedFunction;

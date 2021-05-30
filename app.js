@@ -21,7 +21,7 @@ yargsNew({
       type: 'string',
     },
   },
-  handler: argv => {
+  handler(argv) {
     // console.log(chalk.blue.bold('Adding a new note!'), argv);
     // console.log(chalk.bgGreen.inverse('Title: ' + argv.title));
     // console.log(chalk.bgYellow.inverse('Body: ' + argv.body));
@@ -38,15 +38,27 @@ yargsNew({
       type: 'string',
     },
   },
-  handler: argv => {
+  handler(argv) {
     exportedFunction.removeNote(argv.title);
   },
 });
 yargsNew({
   command: 'list',
   describe: 'Remove a note',
-  handler: () => {
+  handler() {
     console.log(chalk.yellow.bold('List the note!'));
+    exportedFunction.listNote();
+  },
+});
+yargsNew({
+  command: 'read',
+  describe: 'Read a note',
+  builder: {
+    title: 'Read a note',
+    demandOption: true
+  },
+  handler(argv) {
+    exportedFunction.readNote(argv.title);
   },
 });
 
