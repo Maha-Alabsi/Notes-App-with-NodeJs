@@ -1,15 +1,14 @@
 import chalk from 'chalk';
 import fs from 'fs';
-import { writeFileSync } from 'fs';
-import { readFileSync } from 'fs';
-import { title } from 'process';
+// import { writeFileSync } from 'fs';
+// import { readFileSync } from 'fs';
 
 const addNotes = (title, body) => {
   const notes = loadNotes();
   // create new array that saves duplicate notes
   // const duplicateNotes = notes.filter(note => note.title === title);
   const duplicateNotes = notes.find(note => note.title === title);
-
+  debugger
   if (!duplicateNotes) {
     notes.push({
       title: title,
@@ -65,7 +64,7 @@ const listNote = () => {
   });
 };
 
-const readNote = (title) => {
+const readNote = title => {
   const notes = loadNotes();
   const readnote = notes.find(note => note.title === title);
   if (readnote) {
